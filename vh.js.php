@@ -13,13 +13,45 @@ function response_error($msg) {
 
 include('conf.php');
 
+$langs = [
+	'en' => [
+		'intro' => 'Do you have some feedback? Write and send it from here!',
+		'title' => 'Brief title',
+		'text' => 'Complete text for your message. Please be as specific as possible!',
+		'send' => 'Send!',
+		'wait' => 'Wait...',
+		'oops' => 'Oops... An error occourred...',
+		'error_title' => "Parameter 'title' has not been defined",
+		'error_content' => "Parameter 'contents' has not been defined",
+		'error_save' => 'Error while saving your feedback',
+		'final' => '<p>Your note has been saved <a target="_blank" href="URL">here</a></p><p>Thanks for your contribution!</p>'
+	],
+	
+	'it' => [
+		'intro' => 'Vuoi inviare una segnalazione? Scrivila e mandala da qui!',
+		'title' => 'Breve titolo',
+		'text' => 'Testo del tuo messaggio. Sii quanto più preciso possibile!',
+		'send' => 'Invia!',
+		'wait' => 'Attendi...',
+		'oops' => "Oops... C'è stato un errore...",
+		'error_title' => "Il parametro 'titolo' non è stato definito",
+		'error_content' => "Il parametro 'contenuto' non è stato definito",
+		'error_save' => 'Errore nel salvataggio della tua segnalazione',
+		'final' => '<p>La tua nota è stata salvata <a target="_blank" href="URL">qui</a></p><p>Grazie per il contributo!</p>'
+	]
+];
+
+$lang = 'en';
+if (isset($_REQUEST['lang']) && isset($langs[$_REQUEST['lang']]))
+	$lang = $_REQUEST['lang'];
+
 switch($_SERVER['REQUEST_METHOD']) {
         case 'POST':
                 if (!isset($_POST['title']) || empty($_POST['title']))
-                        response_error("Parameter 'title' has not been defined");
+                        response_error($langs[$lang]['error_title']);
 
                 if (!isset($_POST['contents']) || empty($_POST['contents']))
-                        response_error("Parameter 'contents' has not been defined");
+                        response_error($langs[$lang]['error_content']);
 
                 if (isset($conf['fixed_project']) && !empty($conf['fixed_project']))
                         $project = $conf['fixed_project'];
@@ -59,7 +91,7 @@ switch($_SERVER['REQUEST_METHOD']) {
                         echo json_encode($r);
                 }
                 else {
-                        response_error("Error while saving your feedback");
+                        response_error($langs[$lang]['error_save']);
                 }
 
                 break;
@@ -90,7 +122,7 @@ switch($_SERVER['REQUEST_METHOD']) {
                                         .css('background-color', '#FFF')
                                         .css('border-top-left-radius', '10px')
                                         .css('border-bottom-left-radius', '10px')
-                                        .appendTo('body').append('<p class="intro">Do you have some feedback? Write and send it from here!</p>');
+                                        .appendTo('body').append('<p class="intro"><?php echo $langs[$lang]['intro'] ?></p>');
 
                                 this.tab = $('<div>')
                                         .css('position', 'absolute')
@@ -120,7 +152,7 @@ switch($_SERVER['REQUEST_METHOD']) {
                                         .submit(
                                                 function(e) {
                                                         e.preventDefault();
-                                                        $(this).find('button').text('Wait...').attr('disabled', 'disabled');
+                                                        $(this).find('button').text('<?php echo $langs[$lang]['wait'] ?>').attr('disabled', 'disabled');
 
                                                         $.ajax($(this).attr('action'), {
                                                                 method: $(this).attr('method'),
@@ -131,11 +163,11 @@ switch($_SERVER['REQUEST_METHOD']) {
                                                                 },
                                                                 dataType: 'json',
                                                                 success: function(response) {
-                                                                        window.voicehub.container.empty().append('<p>Your note has been saved <a target="_blank" href="' + response.url + '">here</a></p><p>Thanks for your contribution!</p>');
+                                                                        window.voicehub.container.empty().append('<?php echo $langs[$lang]['final'] ?>'.replace('URL', response.url));
                                                                 },
                                                                 error: function(response) {
-                                                                        window.voicehub.container.find('.intro').text('Oops... An error occourred...');
-                                                                        window.voicehub.container.find('form button').text('Send!').removeAttr('disabled');
+                                                                        window.voicehub.container.find('.intro').text("<?php echo $langs[$lang]['oops'] ?>");
+                                                                        window.voicehub.container.find('form button').text('<?php echo $langs[$lang]['send'] ?>').removeAttr('disabled');
                                                                 }
                                                         });
 
@@ -146,7 +178,7 @@ switch($_SERVER['REQUEST_METHOD']) {
                                 this.title = $('<input>')
                                         .attr('type', 'text')
                                         .attr('name', 'title')
-                                        .attr('placeholder', 'Brief title')
+                                        .attr('placeholder', "<?php echo $langs[$lang]['title'] ?>")
                                         .css('padding', '10px')
                                         .css('width', '100%')
                                         .css('display', 'block')
@@ -154,7 +186,7 @@ switch($_SERVER['REQUEST_METHOD']) {
 
                                 this.content = $('<textarea>')
                                         .attr('name', 'contents')
-                                        .attr('placeholder', 'Complete text for your message. Please be as specific as possible!')
+                                        .attr('placeholder', "<?php echo $langs[$lang]['text'] ?>")
                                         .attr('rows', '5')
                                         .css('padding', '10px')
                                         .css('width', '100%')
@@ -166,7 +198,7 @@ switch($_SERVER['REQUEST_METHOD']) {
                                         .css('padding', '10px')
                                         .css('width', '100%')
                                         .css('display', 'block')
-                                        .text('Send!')
+                                        .text('<?php echo $langs[$lang]['send'] ?>')
                                         .appendTo(this.form);
 
                                 return this;
@@ -202,3 +234,4 @@ switch($_SERVER['REQUEST_METHOD']) {
 
                 break;
 }
+
