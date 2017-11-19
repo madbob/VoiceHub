@@ -69,7 +69,7 @@
                                                 </li>
                                         </ul>
 
-                                        <p>
+                                        <p class="alert alert-warning">
                                                 <strong>Remember</strong>: if the web domain under which you host your copy of <code>vh.js.php</code> is not the same of the desidered web page, you need to add CORS support on your server. <a href="http://enable-cors.org/server.html">Here</a> you find useful informations for every kind of web server.
                                         </p>
                                 </div>
@@ -80,66 +80,54 @@
                                         <h2>Parameters</h2>
                                 </div>
 
-                                <div class="row">
-                                        <div class="col-md-12">
-                                                <h3>Internal parameters defined in config.php file</h3>
-                                        </div>
-                                </div>
-                                
-                                <div class="row">
-                                        <div class="col-md-3">
-                                                <p>username</p>
-                                        </div>
-                                        <div class="col-md-9">
-                                                <p>Username to be used to publish contents on GitHub.</p>
-                                        </div>
-                                </div>
-                                <div class="row">
-                                        <div class="col-md-3">
-                                                <p>password</p>
-                                        </div>
-                                        <div class="col-md-9">
-                                                <p>GitHub account's password for the above mentioned username.</p>
-                                        </div>
-                                </div>
-                                <div class="row">
-                                        <div class="col-md-3">
-                                                <p>default_project</p>
-                                        </div>
-                                        <div class="col-md-9">
-                                                <p>The default GitHub project against which publish incoming issues, if no <i>project</i> parameter is used while including the Javascript widget.</p>
-                                        </div>
-                                </div>
-                                <div class="row">
-                                        <div class="col-md-3">
-                                                <p>fixed_project</p>
-                                        </div>
-                                        <div class="col-md-9">
-                                                <p>If set, it overrides all other internal and external configurations about the GitHub project for which publish incoming issues.</p>
-                                        </div>
-                                </div>
-                                
-                                <div class="row">
-                                        <div class="col-md-12">
-                                                <h3>External parameters which can be appended when including the Javascript widget</h3>
-                                        </div>
+                                <div class="col-md-12">
+                                        <h3>Internal parameters defined in config.php file</h3>
                                 </div>
 
-                                <div class="row">
-                                        <div class="col-md-3">
-                                                <p>project</p>
-                                        </div>
-                                        <div class="col-md-9">
-                                                <p>The GitHub project you want to publish an issue against, in the form 'username/projectname'. If the <i>fixed_project</i> parameter is set in the configuration file, this is ignored.</p>
-                                        </div>
+                                <div class="col-md-3">
+                                        <p>username</p>
                                 </div>
-                                <div class="row">
-                                        <div class="col-md-3">
-                                                <p>lang</p>
-                                        </div>
-                                        <div class="col-md-9">
-                                                <p>Preferred language for the user widget. Actually are supported the values 'en' (default) and 'it'.</p>
-                                        </div>
+                                <div class="col-md-9">
+                                        <p>Username to be used to publish contents on GitHub.</p>
+                                </div>
+
+                                <div class="col-md-3">
+                                        <p>password</p>
+                                </div>
+                                <div class="col-md-9">
+                                        <p>GitHub account's password for the above mentioned username.</p>
+                                </div>
+
+                                <div class="col-md-3">
+                                        <p>default_project</p>
+                                </div>
+                                <div class="col-md-9">
+                                        <p>The default GitHub project against which publish incoming issues, if no <i>project</i> parameter is used while including the Javascript widget.</p>
+                                </div>
+
+                                <div class="col-md-3">
+                                        <p>fixed_project</p>
+                                </div>
+                                <div class="col-md-9">
+                                        <p>If set, it overrides all other internal and external configurations about the GitHub project for which publish incoming issues.</p>
+                                </div>
+
+                                <div class="col-md-12">
+                                        <h3>External parameters which can be appended when including the Javascript widget</h3>
+                                </div>
+
+                                <div class="col-md-3">
+                                        <p>project</p>
+                                </div>
+                                <div class="col-md-9">
+                                        <p>The GitHub project you want to publish an issue against, in the form 'username/projectname'. If the <i>fixed_project</i> parameter is set in the configuration file, this is ignored.</p>
+                                </div>
+
+                                <div class="col-md-3">
+                                        <p>lang</p>
+                                </div>
+                                <div class="col-md-9">
+                                        <p>Preferred language for the user widget. Actually are supported the values 'en' (default) and 'it'.</p>
                                 </div>
                         </div>
 
@@ -153,6 +141,16 @@
                                                 You can eventually use the provided public instance, configuring it inline with your target GitHub repository location. It will post new issues with <a href="https://github.com/VoiceHub">the dummy VoiceHub account</a>.
 
                                                 <pre>&lt;script type="application/javascript" src="http://vh.madbob.org/vh.js.php?project=username/repository"&gt;&lt;/script&gt;</pre>
+                                        </p>
+                                        <p>
+                                                Also, if you don't like the default widget, you can provide your own form to serialize and send asynchronously on POST.
+
+                                                <pre>&lt;form method="POST" action="http://vh.madbob.org/vh.js.php"&gt;
+    &lt;input name="project" value="username/repository" type="hidden"&gt;
+    &lt;input name="title" value="" required="" autocomplete="off" type="text"&gt;
+    &lt;textarea name="contents" autocomplete="off"&gt;&lt;/textarea&gt;
+    &lt;button type="submit" class="btn btn-success"&gt;Send&lt;/button&gt;
+&lt;/form&gt;</pre>
                                         </p>
                                 </div>
                         </div>
